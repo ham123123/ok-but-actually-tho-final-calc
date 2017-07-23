@@ -1,6 +1,14 @@
 package ButtonClicked;
 
+import java.util.HashMap;
+
 import javax.swing.JTextField;
+
+import ActualOperation.ActualOperation;
+import ActualOperation.Adding;
+import ActualOperation.Dividing;
+import ActualOperation.Multiplying;
+import ActualOperation.Subtracting;
 
 public class Division implements ButtonClicked {
 	private boolean operationClicked;
@@ -8,6 +16,7 @@ public class Division implements ButtonClicked {
 	private int operation;
 	private JTextField result;
 	private double num;
+	private HashMap<Integer, ActualOperation> operationDictionary;
 
 	public Division (boolean opClicked, int count, int operation, JTextField result, double num) {
 		this.operationClicked = opClicked;
@@ -21,103 +30,29 @@ public class Division implements ButtonClicked {
 	public void execute() {
 		operationClicked = true;
 		String text = result.getText();
-		if (storedOperationIsAddition()) {
-			add(text);
+		operationDictionary = new HashMap<Integer, ActualOperation>();
+		fillOperationDictionary(text);
+		if (operation == 0) {
 			operation = 3;
-		} else if (storedOperationIsSubtraction()) {
-			subtract(text);
-			operation = 3;
-		} else if (storedOperationIsMultiplication()) {               // if earlier stored button was multiplication
-			multiply(text);
-			operation = 3;
-		} else if (storedOperationIsEquality()) {
-			count = 0;
-			divide(text);
-		} else {                                   // if there is repetitive division
-			divide(text);
 		}
+		operationDictionary.get(operation).operate();
+		getInfoFromOperationDictionary();
+		operation = 3;
 	}
 	
-	private void multiply(String text) {
-		if (count == 0) {                                 // to store the first number
-			num = Double.parseDouble(text);
-			count = 1;
-		} else if (count != 0) {                          // to store second number and multiply
-			double newNum = Double.parseDouble(text);
-			num = num * newNum;
-			result.setText("" + num);
-		}
-		operation = 4;                         // storing given multiplication value to perform function at next button
+	private void getInfoFromOperationDictionary() {
+		count = operationDictionary.get(operation).getCount();
+		num = operationDictionary.get(operation).getNum();
+		result = operationDictionary.get(operation).getResult();
 	}
 
-	/* This method divides two consecutively inserted numbers 
-	 * after the division button is clicked
-	 */
-	
-	private void divide(String text) {
-		if (count == 0) {
-			num = Double.parseDouble(text);
-			count = 1;
-		} else if (count != 0) {                          // to store second number and multiply
-			double newNum = Double.parseDouble(text);
-			num = num / newNum;
-			result.setText("" + num);
-		}
-		operation = 3;                             // storing given division value to perform function at next button
-	}
-
-	/* This method adds two consecutively inserted numbers after the addition
-	 * button is clicked
-	 */
-	
-	private void add(String text) {
-		if (count == 0) {
-			num = Double.parseDouble(text);
-			count = 1;
-		} else if (count != 0) {                         // to store second number and add
-			double newNum = Double.parseDouble(text);
-			num = num + newNum;
-			result.setText("" + num);
-		}
-		operation = 1;                           // storing given addition value to perform function at next button
+	private void fillOperationDictionary(String text) {
+		operationDictionary.put(1, new Adding (count, text, num, result));
+		operationDictionary.put(2, new Subtracting (count, text, num, result));
+		operationDictionary.put(3, new Dividing (count, text, num, result));
+		operationDictionary.put(4, new Multiplying (count, text, num, result));
 	}
 	
-	/* This method subtracts two consecutively inserted numbers after the subtraction
-	 * button is clicked
-	 */
-	
-	private void subtract(String text) {
-		if (count == 0) {
-			num = Double.parseDouble(text);
-			count = 1;
-		} else if (count != 0) {                         // to store second number and subtract
-			double newNum = Double.parseDouble(text);
-			num = num - newNum;
-			result.setText("" + num);
-		}
-		operation = 2;                          // storing given subtraction value to perform function at next button
-	}
-	
-	private boolean storedOperationIsMultiplication() {
-		return operation == 4;
-	}
-	
-	// This method returns whether the operation is subtraction, presented by the value of 2
-
-	private boolean storedOperationIsSubtraction() {
-		return operation == 2;
-	}
-
-	// This method returns whether the operation is addition, presented by the value of 1
-
-	private boolean storedOperationIsAddition() {
-		return operation == 1;
-	}
-	
-	private boolean storedOperationIsEquality() {
-		return operation == 0;
-	}
-
 	@Override
 	public int getOperation() {
 		// TODO Auto-generated method stub
