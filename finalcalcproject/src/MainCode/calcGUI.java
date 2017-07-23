@@ -1,3 +1,4 @@
+package MainCode;
 /* This program creates a calculator GUI equipped with an 
  * addition, multiplication, division, and subtraction option.
  */
@@ -7,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -14,6 +16,16 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import ButtonClicked.Addition;
+import ButtonClicked.ButtonClicked;
+import ButtonClicked.Clear;
+import ButtonClicked.Decimal;
+import ButtonClicked.Division;
+import ButtonClicked.Equation;
+import ButtonClicked.Multiplication;
+import ButtonClicked.Number;
+import ButtonClicked.Subtraction;
 
 public class calcGUI implements ActionListener {
 	private static final String OPERATION_DIVISION = "/";
@@ -34,7 +46,8 @@ public class calcGUI implements ActionListener {
 	private double num; 
 	private int operation; 
 	private int count;
-
+	private HashMap <String, ButtonClicked> commandDictionary;
+	
 	public static void main(String[] args) {
 		new calcGUI().init();
 	}
@@ -92,61 +105,39 @@ public class calcGUI implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent event) {
-		RespondToButtonClicks click = new RespondToButtonClicks(event, operationClicked, result, operation);
-		DoOperations operations = new DoOperations(num, count, result, operation);
-		if (!isOperation(event)) { // when number is clicked
-			click.treatAsNumber();
-			operationClicked = click.getOperationStatus();
-		} else if (is(event, OPERATION_DOT)) { // when decimal point is clicked
-			click.treatAsDecimal();
-			operationClicked = click.getOperationStatus();
-		} else if (is(event, OPERATION_ADDITION)) { // when addition button is clicked
-			operationClicked = true;
-			operations.doStoredOperationIfAnyThenAdd();
-			operation = operations.getOperation();
-			num = operations.getNum();
-			count = operations.getCount();
-			result.setText(operations.getResultText());
-		} else if (is(event, OPERATION_SUBTRACTION)) { // when subtraction is clicked
-			operationClicked = true;
-			operations.doStoredOperationIfAnyThenSubtract();
-			operation = operations.getOperation();
-			num = operations.getNum();
-			count = operations.getCount();
-			result.setText(operations.getResultText());
-		} else if (is(event, OPERATION_DIVISION)) { // when division is clicked
-			operationClicked = true;
-			operations.doStoredOperationIfAnyThenDivide();
-			operation = operations.getOperation();
-			num = operations.getNum();
-			count = operations.getCount();
-			result.setText(operations.getResultText());
-		} else if (is(event, OPERATION_MULTIPLICATION)) { // when multiplication is clicked
-			operationClicked = true;
-			operations.doStoredOperationIfAnyThenMultiply();
-			operation = operations.getOperation();
-			num = operations.getNum();
-			count = operations.getCount();
-			result.setText(operations.getResultText());
-		} else if (is(event, OPERATION_EQUALS)) { // when equals sign is clicked
-			operationClicked = true;
-			operations.doStoredOperationAndFindResult();
-			operation = operations.getOperation();
-			num = operations.getNum();
-			count = operations.getCount();
-			result.setText(operations.getResultText());
-		} else if (is(event, OPERATION_CLEAR)) {
-			result.setText("");
-			operation = 0; // reset at value of equals
-			count = 0;
-			operationClicked = true;
+		commandDictionary = new HashMap <String, ButtonClicked>();
+		fillCommandDictionary(event);
+		String text = "";
+		if (!isOperation(event)) { 
+			text = "number";
+		} else {
+			text =  event.getActionCommand();
 		}
+		commandDictionary.get(text).execute();
+		getInfoFromCommandDictionary(text);
 
 	}
 
-	private boolean is(ActionEvent ev, String operation) {
-		return ev.getActionCommand().contains(operation);
+	private void getInfoFromCommandDictionary(String text) {
+		result = commandDictionary.get(text).getResultText();
+		operation = commandDictionary.get(text).getOperation();
+		count = commandDictionary.get(text).getCount();
+		num = commandDictionary.get(text).getNum();
+		operationClicked = commandDictionary.get(text).getOperationClicked();
+		
 	}
+
+	private void fillCommandDictionary(ActionEvent ev) {
+		commandDictionary.put("+", new Addition (operationClicked, count, operation, result, num));
+		commandDictionary.put("-", new Subtraction (operationClicked, count, operation, result, num));
+		commandDictionary.put("/", new Division (operationClicked, count, operation, result, num));
+		commandDictionary.put("x", new Multiplication (operationClicked, count, operation, result, num));
+		commandDictionary.put("=", new Equation (operationClicked, count, operation, result, num));
+		commandDictionary.put(".", new Decimal (operationClicked, result, ev, operation, num, count));
+		commandDictionary.put("number", new Number (operationClicked, result, ev, operation, count, num));
+		commandDictionary.put("Clear", new Clear (operationClicked, result, count, operation, num));
+	}
+
 
 	private boolean isOperation(ActionEvent ev) {
 		return OPERATIONS.stream().anyMatch(ev.getActionCommand()::contains);

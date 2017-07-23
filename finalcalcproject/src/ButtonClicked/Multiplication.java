@@ -1,39 +1,25 @@
+package ButtonClicked;
+
 import javax.swing.JTextField;
 
+public class Multiplication implements ButtonClicked {
+	private boolean operationClicked;
+	private int count;
+	private int operation;
+	private JTextField result;
+	private double num;
 
-public class DoOperations {
-	
-	int count;
-	double num;
-	JTextField result;
-	int operation;
-	
-	public DoOperations(double nm, int cnt, JTextField rst, int op) {
-		num = nm;
-		count = cnt;
-		result = rst;
-		operation = op;
-	}
-	
-	public void doStoredOperationAndFindResult() {
-		String text = result.getText();
-		if (storedOperationIsAddition()) {                    // if equation was addition
-			add(text);
-			operation = 0;
-		} else if (storedOperationIsSubtraction()) {             // if equation was subtraction
-			subtract(text);
-			operation = 0;
-		} else if (storedOperationIsDivision()) {             // if equation was division
-			divide(text);
-			operation = 0;
-		} else if (storedOperationIsMultiplication()) {             // if equation was multiplication
-			multiply(text);
-			operation = 0;                       // reset at value of equals
-		}
-		count = 0;
+	public Multiplication (boolean opClicked, int count, int operation, JTextField result, double num) {
+		this.operationClicked = opClicked;
+		this.count = count;
+		this.operation = operation;
+		this.result = result;
+		this.num = num;
+		
 	}
 
-	public void doStoredOperationIfAnyThenMultiply() {
+	public void execute() {
+		operationClicked = true;
 		String text = result.getText();
 		if (storedOperationIsAddition()) {                    // if earlier stored button was addition
 			add(text);
@@ -49,75 +35,6 @@ public class DoOperations {
 			multiply(text);
 		} else {
 			multiply(text);                     // if there is repetitive multiplication
-		}
-	}
-
-	/* This method performs the earlier stored equation, 
-	 * then stores a new division equation
-	 */
-	
-	public void doStoredOperationIfAnyThenDivide() {
-		String text = result.getText();
-		if (storedOperationIsAddition()) {
-			add(text);
-			operation = 3;
-		} else if (storedOperationIsSubtraction()) {
-			subtract(text);
-			operation = 3;
-		} else if (storedOperationIsMultiplication()) {               // if earlier stored button was multiplication
-			multiply(text);
-			operation = 3;
-		} else if (storedOperationIsEquality()) {
-			count = 0;
-			divide(text);
-		} else {                                   // if there is repetitive division
-			divide(text);
-		}
-	}
-
-	/* This method performs the earlier stored equation, 
-	 * then stores a new subtraction equation
-	 */
-	
-	public void doStoredOperationIfAnyThenSubtract() {
-		String text = result.getText();
-		if (storedOperationIsAddition()) {
-			add(text);
-			operation = 2;
-		} else if (storedOperationIsDivision()) {
-			divide(text);
-			operation = 2;
-		} else if (storedOperationIsMultiplication()) {
-			multiply(text);
-			operation = 2;
-		} else if (storedOperationIsEquality()) {
-			count = 0;
-			subtract(text);
-		} else {                                      // if there is repetitive subtraction
-			subtract(text);
-		}
-	}
-
-	/* This method performs the earlier stored equation, 
-	 * then stores a new addition equation
-	 */
-	
-	public void doStoredOperationIfAnyThenAdd() {
-		String text = result.getText();
-		if (storedOperationIsSubtraction()) {
-			subtract(text);
-			operation = 1;
-		} else if (storedOperationIsDivision()) {
-			divide(text);
-			operation = 1;
-		} else if (storedOperationIsMultiplication()) {
-			multiply(text);
-			operation = 1;
-		} else if (storedOperationIsEquality()) {
-			count = 0;
-			add(text);
-		} else {                                    // if there is repetitive addition
-			add(text);
 		}
 	}
 	
@@ -180,10 +97,6 @@ public class DoOperations {
 		}
 		operation = 2;                          // storing given subtraction value to perform function at next button
 	}
-	
-	private boolean storedOperationIsMultiplication() {
-		return operation == 4;
-	}
 
 	// This method returns whether the operation is division, presented by the value of 3
 
@@ -206,21 +119,36 @@ public class DoOperations {
 	private boolean storedOperationIsEquality() {
 		return operation == 0;
 	}
-
+	
+	@Override
 	public int getOperation() {
+		// TODO Auto-generated method stub
 		return operation;
 	}
 
+	@Override
 	public double getNum() {
+		// TODO Auto-generated method stub
 		return num;
 	}
 
+	@Override
 	public int getCount() {
+		// TODO Auto-generated method stub
 		return count;
 	}
 
-	public String getResultText() {
-		return result.getText();
+	@Override
+	public JTextField getResultText() {
+		// TODO Auto-generated method stub
+		return result;
 	}
+
+	@Override
+	public boolean getOperationClicked() {
+		// TODO Auto-generated method stub
+		return operationClicked;
+	}
+
 
 }
