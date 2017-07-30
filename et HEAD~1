@@ -1,0 +1,49 @@
+[33mcommit 7dca9c9da39133385c89b457a998d71a5e04865f[m
+Author: Hamzeh <hamzeh.daoud@progressoft.com>
+Date:   Sun Jul 23 10:29:54 2017 +0300
+
+    first set of if-else
+
+[33mcommit 7ec485b1a958498a7f5c7188a9d69b537d4a1d63[m
+Author: Hamzeh <hamzeh.daoud@progressoft.com>
+Date:   Sun Jul 23 09:19:36 2017 +0300
+
+    unnec files
+
+[33mcommit 183ef291520a3260e27c6d83308ae4f7b59c2931[m
+Author: Hamzeh <hamzeh.daoud@progressoft.com>
+Date:   Thu Jul 20 10:23:58 2017 +0300
+
+    a whole lot of refactoring
+
+[33mcommit d2e689a2dbcfa4ec55fa9195dbb3c34726bb2b44[m
+Author: Hamzeh <hamzeh.daoud@progressoft.com>
+Date:   Thu Jul 20 10:13:24 2017 +0300
+
+    lots of refactoring - if/else statements left
+
+[33mcommit f1f9b9e7fff83628fe6420391babd1d15e0ef7ab[m
+Merge: 585170b b00269d
+Author: Hamzeh <hamzeh.daoud@progressoft.com>
+Date:   Tue Jul 18 10:55:38 2017 +0300
+
+    Merge branch 'master' of https://github.com/ham123123/calc
+    hiii
+
+[33mcommit 585170bc1796d772089edb6ea3f1d4eba14c76d0[m
+Author: Hamzeh <hamzeh.daoud@progressoft.com>
+Date:   Tue Jul 18 10:54:46 2017 +0300
+
+    fixing calc
+
+[33mcommit b00269d1b9bc7969213a0c2547c285d70f3bf04f[m
+Author: ham123123 <hamzeh.daoud@progressoft.com>
+Date:   Tue Jul 18 10:53:33 2017 +0300
+
+    Delete .project
+
+[33mcommit 03e873d1f5dd47fc4820d288e3d2c48bcd6c5437[m
+Author: Hamzeh <hamzeh.daoud@progressoft.com>
+Date:   Tue Jul 18 10:49:36 2017 +0300
+
+    brand new calc

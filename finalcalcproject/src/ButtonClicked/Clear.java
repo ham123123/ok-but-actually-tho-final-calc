@@ -1,54 +1,22 @@
 package ButtonClicked;
 
-import javax.swing.JTextField;
+
+import MainCode.Args;
 
 public class Clear implements ButtonClicked {
 
-	private boolean operationClicked;
-	private JTextField result;
-	private int count;
-	private int operation;
-	private double num;
+	private Args variables;
 	
 	
-	public Clear (boolean opClicked, JTextField result, int count, int operation, double num) {
-		this.operationClicked = opClicked;
-		this.result = result;
-		this.count = count;
-		this.operation = operation;
-		this.num = num;
+	public Clear (Args variables) {
+		this.variables = variables;
 	}
+	
 	@Override
 	public void execute() {
-		result.setText("");
-		operation = 0; // reset at value of equals
-		count = 0;
-		operationClicked = true;		
+		variables.getResult().setText("");
+		variables.setOperation(0);
+		variables.setCount(0);		
+		variables.setOperationClicked(true);		
 	}
-	@Override
-	public int getOperation() {
-		// TODO Auto-generated method stub
-		return operation;
-	}
-	@Override
-	public double getNum() {
-		// TODO Auto-generated method stub
-		return num;
-	}
-	@Override
-	public int getCount() {
-		// TODO Auto-generated method stub
-		return count;
-	}
-	@Override
-	public JTextField getResultText() {
-		// TODO Auto-generated method stub
-		return result;
-	}
-	@Override
-	public boolean getOperationClicked() {
-		// TODO Auto-generated method stub
-		return operationClicked;
-	}
-
 }

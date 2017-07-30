@@ -42,20 +42,19 @@ public class calcGUI implements ActionListener {
 					OPERATION_DIVISION, OPERATION_EQUALS, 
 					OPERATION_CLEAR, OPERATION_DOT);
 	private JTextField result; 
-	private boolean operationClicked; 
-	private double num; 
-	private int operation; 
-	private int count;
 	private HashMap <String, ButtonClicked> commandDictionary;
+	private Args variables;
 	
 	public static void main(String[] args) {
 		new calcGUI().init();
 	}
 
 	public void init() {
-		count = 0;
-		num = 0.0;
-		operation = 0;
+		variables = new Args();
+		variables.setCount(0);
+		variables.setNum(0.0);
+		variables.setOperation(0);
+		variables.setOperationClicked(false);
 		JFrame frame = new JFrame("Calculator");
 		frame.setSize(250, 400);
 		JPanel pane = new JPanel(new GridLayout(4, 4));
@@ -67,6 +66,9 @@ public class calcGUI implements ActionListener {
 
 	private void addResultFieldAndClearButton(JFrame frame) {
 		result = new JTextField(16);
+		result.setText("");
+		variables.setText(result.getText());
+		variables.setResult(result);
 		frame.add(result, "North");
 		JButton clear = new JButton(OPERATION_CLEAR);
 		clear.addActionListener(this);
@@ -105,6 +107,7 @@ public class calcGUI implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent event) {
+		variables.setEvent(event);
 		commandDictionary = new HashMap <String, ButtonClicked>();
 		fillCommandDictionary(event);
 		String text = "";
@@ -114,28 +117,18 @@ public class calcGUI implements ActionListener {
 			text =  event.getActionCommand();
 		}
 		commandDictionary.get(text).execute();
-		getInfoFromCommandDictionary(text);
 
-	}
-
-	private void getInfoFromCommandDictionary(String text) {
-		result = commandDictionary.get(text).getResultText();
-		operation = commandDictionary.get(text).getOperation();
-		count = commandDictionary.get(text).getCount();
-		num = commandDictionary.get(text).getNum();
-		operationClicked = commandDictionary.get(text).getOperationClicked();
-		
 	}
 
 	private void fillCommandDictionary(ActionEvent ev) {
-		commandDictionary.put("+", new Addition (operationClicked, count, operation, result, num));
-		commandDictionary.put("-", new Subtraction (operationClicked, count, operation, result, num));
-		commandDictionary.put("/", new Division (operationClicked, count, operation, result, num));
-		commandDictionary.put("x", new Multiplication (operationClicked, count, operation, result, num));
-		commandDictionary.put("=", new Equation (operationClicked, count, operation, result, num));
-		commandDictionary.put(".", new Decimal (operationClicked, result, ev, operation, num, count));
-		commandDictionary.put("number", new Number (operationClicked, result, ev, operation, count, num));
-		commandDictionary.put("Clear", new Clear (operationClicked, result, count, operation, num));
+		commandDictionary.put("+", new Addition (variables));
+		commandDictionary.put("-", new Subtraction (variables));
+		commandDictionary.put("/", new Division (variables));
+		commandDictionary.put("x", new Multiplication (variables));
+		commandDictionary.put("=", new Equation (variables));
+		commandDictionary.put(".", new Decimal (variables));
+		commandDictionary.put("number", new Number (variables));
+		commandDictionary.put("Clear", new Clear (variables));
 	}
 
 
